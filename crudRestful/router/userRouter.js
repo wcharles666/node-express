@@ -3,7 +3,7 @@ const router = express.Router();
 const User = require('../db/model/usersModel');
 const sendMail = require('../utils/mail.js');
 
-// 0: 返回正常，请求成功
+//  0: 返回正常，请求成功
 // -1: 接口请求正常，返回错误
 // -2: 接口请求不正常，返回异常  
 
@@ -12,6 +12,46 @@ let codes = {
     // {ctime}
 } //通过内存保存验证码
 
+/**
+ * @api {post} /user/getMailcode 获取邮箱验证码
+ * @apiDescription 输入邮箱,获取邮箱注册验证码
+ * @apiVersion 1.0.0
+ * @apiName getMailcode
+ * @apiGroup User
+ * 
+ *
+ * @apiParam {String} mail 接受验证码的邮箱
+ *
+ * 
+ * @apiSuccess {String} msg 邮件已发送,请注意查收
+ * @apiSuccess {Int} code 成功标识，值为0
+ *
+ * 
+ * @apiParamExample  {type} 请求举例
+ * {
+ *     mail : '519440695@qq.com'
+ * }
+ *
+ * @apiSuccessExample 成功结果
+ *  HTTP/1.1 200 OK
+ *  {
+ *       code : 0,
+ *       msg: '验证码发送成功',
+ *  }
+ * 
+ * 
+ * @apiError {String} msg 邮件发送失败,请稍后再试/参数错误
+ * @apiError {Int} code 错误标识，值为-1
+ * 
+ * 
+ * @apiErrorExample 错误结果:
+ *  HTTP/1.1 500 Internal Server Error
+ *  {
+ *       code : -1,
+ *       msg: '参数错误/邮件发送失败,请稍后再试',
+ *  }
+ * 
+ */
 router.post('/getMailcode', (req, res) => {
     let { mail } = req.body;
     if (mail) {
@@ -39,6 +79,52 @@ router.post('/getMailcode', (req, res) => {
     }
 })
 
+/**
+ * @api {post} /user/reg 注册用户名
+ * @apiDescription 输入用户名,密码,邮箱,验证码注册用户名
+ * @apiVersion 1.0.0
+ * @apiName reg
+ * @apiGroup User
+ * 
+ *
+ * @apiParam {String} us 用户名
+ * @apiParam {String} ps 密码
+ * @apiParam {String} mail 邮箱
+ * @apiParam {Int} code 验证码
+ *
+ * 
+ * @apiSuccess {String} msg 注册成功
+ * @apiSuccess {Int} code 成功标识，值为0
+ *
+ * 
+ * @apiParamExample  {type} 请求举例
+ * {
+ *     us: 'wcharles',
+ *     ps: 'love',
+ *     mail: '519440695@qq.com',
+ *     code: 1234
+ * }
+ *
+ * @apiSuccessExample 成功结果
+ *  HTTP/1.1 200 OK
+ *  {
+ *       code : 0,
+ *       msg: '注册成功',
+ *  }
+ * 
+ * 
+ * @apiError {String} msg 1.验证码错误请重试 2.参数错误 3.用户名已存在
+ * @apiError {Int} code 错误标识，值为-1
+ * 
+ * 
+ * @apiErrorExample 错误结果:
+ *  HTTP/1.1 500 Internal Server Error
+ *  {
+ *       code : -1,
+ *       msg: 1.验证码错误请重试 2.参数错误 3.用户名已存在,
+ *  }
+ * 
+ */
 router.post('/reg', (req, res) => {
     // 获取数据
     // 数据处理
