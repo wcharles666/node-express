@@ -1,0 +1,35 @@
+
+.catogeryPage {
+  width: 250px;
+  border-right: 1px solid #f5f5f5;
+  min-height: 500px;
+  max-height: 500px;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+/* 隐藏滑动条，但能滚动 */
+.accountDetailPage::-webkit-scrollbar {
+  display: none;
+}
+
+.catogeryBox {
+  display: flex;
+  flex-direction: row;
+  box-sizing: border-box;
+  padding:  10px 20px;
+  align-items: center;
+}
+.catogeryBox:hover {
+  background-color: #f1f1f1 !important;
+  cursor: pointer;
+}
+
+.catogeryImg {
+  width: 40;
+}
+.catogeryContent {
+  flex: 1;
+  padding-left: 10px;
+
+}

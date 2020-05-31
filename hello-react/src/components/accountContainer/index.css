@@ -1,0 +1,15 @@
+.accountContainerPage {
+  width: 700px;
+  display: flex;
+  background-color: #fff;
+  flex-direction: column;
+  box-shadow: 5px 5px 10px 5px rgba(0,0,0,0.1), -5px 5px 5px 5px rgba(0,0,0,0.1);
+}
+
+.accountContent {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+
+  overflow: auto;
+}

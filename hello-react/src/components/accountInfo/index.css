@@ -1,0 +1,23 @@
+.accountInfoPage {
+  width: 220px;
+  background-color: #fff;
+  margin-bottom: 15px;
+  padding:  10px 20px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.accountInfoImg {
+  width: 40px;
+}
+.catogeryContent {
+  flex: 1;
+  padding-left: 10px;
+
+}
+.catogeryArrow {
+  padding-left: 5px;
+  width: 40px;
+}

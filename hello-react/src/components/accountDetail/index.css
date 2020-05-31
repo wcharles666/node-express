@@ -1,0 +1,43 @@
+.accountDetailPage {
+  flex: 1;
+  min-height: 500px;
+  max-height: 500px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+/* 隐藏滑动条，但能滚动 */
+.accountDetailPage::-webkit-scrollbar {
+  display: none;
+}
+
+.detailBox {
+  display: flex;
+  flex-direction: row;
+  padding: 10px 20px;
+  align-items: center;
+}
+
+.detailBox:hover {
+  cursor: pointer;
+  background-color: #f1f1f1 !important;
+}
+
+.detailImg {
+  width: 60px;
+}
+
+.detailContent {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.detailName {
+  display: flex;
+  flex-direction: row;
+}
+.detailImgContain {
+  display: flex;
+  flex-direction: row;
+}
+
