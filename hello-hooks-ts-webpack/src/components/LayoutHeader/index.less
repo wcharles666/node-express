@@ -1,0 +1,70 @@
+.layoutHeader {
+  height: 1.2rem;
+  background-color: #ffffff;
+  z-index: 10;
+}
+.navs-header {
+  padding: 0 0.3rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.navs-brand {
+  width: 5rem;
+  height: 0.8rem;
+  background-color: #ed5729;
+  margin-right: 0.3rem;
+}
+.navs-right-container {
+  flex: 1;
+  align-items: center;
+  display: flex;
+  justify-content: flex-end;
+  .navs-menu {
+    display: flex;
+    .navs-menu-item {
+      padding: 0 0.2rem;
+      font-size: 0.3rem;
+      margin-right: 0.2rem;
+    }
+    .navs-menu-item > a > span {
+      color: #333;
+    }
+    .navs-menu-item > a > span:hover {
+      cursor: pointer;
+      color: '#ed5729';
+    }
+  }
+  // 导航栏设置菜单区域
+  .navs-settings-menu {
+    display: flex;
+    .navs-settings-menu-item {
+      padding: 0 0.1rem;
+      font-size: 0.25rem;
+      margin-right: 0.2rem;
+    }
+    .navs-settings-menu-item > a > span {
+      color: #333;
+    }
+    .navs-settings-menu-item > a > span:hover {
+      cursor: pointer;
+      color: '#ed5729';
+    }
+  }
+
+  // 导航栏用户信息菜单区域
+  .navs-userInfo-menu {
+    display: flex;
+    .navs-userInfo-menu-item {
+      padding: 0 0.1rem;
+      font-size: 0.3rem;
+      margin-right: 0.2rem;
+    }
+    .navs-userInfo-menu-item > a > span {
+    }
+    .navs-userInfo-menu-item > a > span:hover {
+      cursor: pointer;
+      color: '#ed5729';
+    }
+  }
+}
