@@ -1,4 +1,5 @@
 import Login from '@/containers/Login';
+import Register from '@/containers/Register';
 import Main from '@/containers/Main';
 import NotFound from '@/components/NotFound';
 
@@ -10,6 +11,12 @@ const routes = [
     path: '/login',
     exact: true,
     component: Login,
+    requiresAuth: false,
+  },
+  {
+    path: '/register',
+    exact: true,
+    component: Register,
     requiresAuth: false,
   },
   {
