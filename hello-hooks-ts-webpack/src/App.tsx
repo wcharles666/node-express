@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 
-
 // 设计全局组件来管理是否跳转到登录
 
 interface AppProp {

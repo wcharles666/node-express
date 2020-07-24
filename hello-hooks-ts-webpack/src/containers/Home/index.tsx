@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import './index.less';
-import HandleSider from '../../config/handleSider';
+import { dipatchLeftSide } from '@/config/commonMethods';
 
-const Home = props => {
-  HandleSider(props);
-  console.log('dksjdkjskd');
+const Home = (props: any) => {
+  dipatchLeftSide(props);
   return <div className="homePage">首页</div>;
 };
 

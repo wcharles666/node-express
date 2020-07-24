@@ -1,48 +1,69 @@
 // import _ from 'lodash';
 // import {  } from 'react-router-dom';
 import Home from '@/containers/Home';
-import Form from '@/containers/Form';
-import Table from '@/containers/Table';
-import Pagination from '@/containers/Pagination';
-import ThreeEarth from '@/containers/ThreeEarth';
+import ComLibiray from '@/containers/ComLibiray';
+import DemoExample from '@/containers/DemoExample';
+import Settings from '@/containers/Settings';
+import AntdForm from '@/components/antdCom/formHook';
+import AntdTable from '@/components/antdCom/tableHook';
+import AntdPagaination from '@/components/antdCom/pagainationHook';
+import NotFound from '@/components/NotFound';
 
 const contentRoutes = [
   {
-    path: '/main/home',
+    path: '/',
     name: 'home',
     component: Home,
-    sideMenu: false,
+    exact: true,
+    // requiresAuth: true,
+    leftSide: false,
+  },
+  {
+    path: '/main/components',
+    name: 'comLibiray',
+    component: ComLibiray,
+    exact: true,
+    // requiresAuth: true,
+    leftSide: true,
   },
   {
     path: '/main/components/form',
-    name: 'form',
-    component: Form,
-    // requiresAuth: true,
-    sideMenu: true,
+    name: 'antdForm',
+    exact: true,
+    component: AntdForm,
+    leftSide: true,
   },
   {
     path: '/main/components/table',
-    name: 'table',
-    component: Table,
-    sideMenu: true,
+    name: 'antdTable',
+    exact: true,
+    component: AntdTable,
+    leftSide: true,
   },
   {
-    path: '/main/components/pagination',
-    name: 'pagination',
-    component: Pagination,
-    sideMenu: true,
-  },
-  {
-    path: '/main/components/threeEarth',
-    name: 'threeEarth',
-    component: ThreeEarth,
-    sideMenu: true,
+    path: '/main/components/pagaination',
+    name: 'antdPagaination',
+    exact: true,
+    component: AntdPagaination,
+    leftSide: true,
   },
   {
     path: '/main/demo',
-    name: 'home',
-    component: Home,
-    sideMenu: false,
+    name: 'demoExample',
+    exact: true,
+    component: DemoExample,
+    leftSide: true,
+  },
+  {
+    path: '/main/settings',
+    name: 'Settings',
+    exact: true,
+    component: Settings,
+    leftSide: false,
+  },
+  {
+    path: '*',
+    component: NotFound,
   },
 ];
 

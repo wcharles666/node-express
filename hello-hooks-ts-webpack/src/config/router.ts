@@ -3,7 +3,8 @@ import Main from '@/containers/Main';
 import NotFound from '@/components/NotFound';
 
 const routes = [
-  { path: '/', exact: true, component: Main, requiresAuth: false },
+  { path: '/', component: Main, requiresAuth: false, exact: true },
+  // { path: '/', exact: true, component: Main, requiresAuth: false  },
   { path: '/main', component: Main, requiresAuth: false },
   {
     path: '/login',
@@ -11,7 +12,6 @@ const routes = [
     component: Login,
     requiresAuth: false,
   },
-  
   {
     path: '*',
     component: NotFound,

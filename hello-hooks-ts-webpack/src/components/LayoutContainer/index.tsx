@@ -4,34 +4,27 @@ import { useLocation, useParams } from 'react-router-dom';
 import './index.less';
 import LayoutSider from '@/components/LayoutSider';
 import LayoutContent from '@/components/LayoutContent';
-import { MyContext } from '../../config/contextManager';
-import { useState } from 'react';
+import { MyContext } from '@/config/contextManager';
+import { useState, useContext } from 'react';
+import { sideBarStore } from '@/config/commonData';
 
 // const ThemeContext = createContext({});
 
 const LayoutContainer = props => {
   console.log(props);
+  console.log(useContext(MyContext), 'sadsad');
+  const { state } = useContext(MyContext);
+  const { leftSide, headActiveMenu } = state;
+  console.log(state, '===');
 
-  const [showSide, setShowSide] = useState(false);
-  let location = useLocation();
-  let params = useParams();
-  useEffect(() => {
-    // usePageViews();
-    const { state } = location;
-    console.log(location);
-    console.log(params, 'params');
-    // const pathname = _.get(state, 'router.location.pathname', '');
-    // let match = useRouteMatch(location.pathname);
-    console.log(location, 'location');
-    //  console.log(pathname);
-  });
+  const sideMenu = sideBarStore[headActiveMenu] || [];
+
+  console.log(sideMenu, 'sdsd');
 
   return (
     <div className="layoutContainer position-all">
-      <MyContext.Provider value={{ setShowSide }}>
-        {showSide && <LayoutSider />}
-        <LayoutContent />
-      </MyContext.Provider>
+      {leftSide && <LayoutSider sideMenu={sideMenu} />}
+      <LayoutContent />
     </div>
   );
 };

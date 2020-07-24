@@ -23,16 +23,26 @@
   .navs-menu {
     display: flex;
     .navs-menu-item {
-      padding: 0 0.2rem;
       font-size: 0.3rem;
       margin-right: 0.2rem;
+      .nav-menu-link {
+        padding: 0.22rem 0.2rem;
+        display: inline-block;
+      }
+      .nav-menu-link-active {
+        color: '#ffffff' !important;
+      }
+      .nav-menu-link:hover {
+        color: '#ed5729';
+        text-decoration: none;
+      }
     }
-    .navs-menu-item > a > span {
-      color: #333;
+    .navs-menu-item-active {
+      background-color: #ff5520;
     }
-    .navs-menu-item > a > span:hover {
+    .navs-menu-item:hover {
+      background-color: #f8f8f8;
       cursor: pointer;
-      color: '#ed5729';
     }
   }
   // 导航栏设置菜单区域

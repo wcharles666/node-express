@@ -1,58 +1,68 @@
 import React, { useState, useContext } from 'react';
 import { Menu } from 'antd';
 import { Link } from 'react-router-dom';
-import { AppstoreOutlined, MailOutlined, SettingOutlined } from '@ant-design/icons';
 import './index.less';
-import { sideBar } from '@/config/navBarStore';
+// import { sideBar } from '@/config/navBarStore';
+import { MyContext } from '@/config/contextManager';
+import { stopRouterChange } from '@/config/commonMethods';
 
 const { SubMenu } = Menu;
 
-const LayoutSider = () => {
-  const [openKeys] = useState(['components']);
-  const [menuArr] = useState(sideBar);
+const LayoutSider = props => {
+  console.log(props);
+  const { sideMenu } = props;
+  // const [menuArr] = useState(sideBar);
 
-  console.log(menuArr);
+  const defaultOpenKeys = [];
 
-  const onOpenChange = openKeys => {
-    const latestOpenKey = openKeys.find(key => openKeys.indexOf(key) === -1);
-    // if (this.rootSubmenuKeys.indexOf(latestOpenKey) === -1) {
-    //   this.setState({ openKeys });
-    // } else {
-    //   this.setState({
-    //     openKeys: latestOpenKey ? [latestOpenKey] : [],
-    //   });
-    // }
-  };
+  sideMenu.forEach(item => {
+    defaultOpenKeys.push(item.name);
+  });
+
+  const { state } = useContext(MyContext);
+  const { sideActiveMenu } = state;
+
   return (
     <div className="layoutSider">
       <Menu
+        forceSubMenuRender={true}
+        defaultSelectedKeys={[sideActiveMenu]}
+        defaultOpenKeys={defaultOpenKeys}
         mode="inline"
-        openKeys={openKeys}
-        onOpenChange={keys => {
-          onOpenChange(keys);
-        }}
+        overflowedIndicator={<span></span>}
         className="w-100"
+        // inlineCollapsed={collapsed}
       >
-        {menuArr.map(item => (
-          <SubMenu
-            key={item.name}
-            title={
-              <span>
-                <MailOutlined />
+        {sideMenu.map(item => {
+          return item.menu ? (
+            <Menu.Item key={item.menu.pathName}>
+              <Link
+                to={item.menu.pathName}
+                onClick={e => stopRouterChange(e, item.menu.pathName, sideActiveMenu)}
+              >
                 <span>{item.title}</span>
-              </span>
-            }
-          >
-            {item.subMenu &&
-              item.subMenu.data.map(item => (
-                <Menu.Item key={item.name}>
-                  <Link to={item.path}>
-                    <span>{item.name}</span>
-                  </Link>
-                </Menu.Item>
-              ))}
-          </SubMenu>
-        ))}
+              </Link>
+            </Menu.Item>
+          ) : (
+            <SubMenu
+              key={item.name}
+              title={
+                <span>
+                  <span>{item.title}</span>
+                </span>
+              }
+            >
+              {item.subMenu &&
+                item.subMenu.data.map(item => (
+                  <Menu.Item key={item.pathName}>
+                    <Link to={item.pathName}>
+                      <span>{item.title}</span>
+                    </Link>
+                  </Menu.Item>
+                ))}
+            </SubMenu>
+          );
+        })}
       </Menu>
     </div>
   );

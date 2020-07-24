@@ -1,25 +1,34 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect, useContext } from 'react';
+import { Link, useHistory, useLocation, useParams } from 'react-router-dom';
+import classNames from 'classnames';
 import './index.less';
+import { headerMenu } from '@/config/commonData';
+import { MyContext } from '@/config/contextManager';
+import { stopRouterChange } from '@/config/commonMethods';
 
 const renderNavMenu = () => {
+  const { state } = useContext(MyContext);
+  const { headActiveMenu } = state;
+  // const [activeMenu, setActiveMenu] = useState('');
+
+  const navsMenuClass = (pathName: string) => {
+    return classNames('navs-menu-item', { 'navs-menu-item-active': headActiveMenu === pathName });
+  };
+
   return (
     <ul className="navs-menu ul-public">
-      <li className="navs-menu-item">
-        <Link to="/main/home">
-          <span>首页</span>
-        </Link>
-      </li>
-      <li className="navs-menu-item">
-        <Link to="/main/components/form">
-          <span>组件库</span>
-        </Link>
-      </li>
-      <li className="navs-menu-item">
-        <Link to="/main/demo">
-          <span>Demo案例</span>
-        </Link>
-      </li>
+      {headerMenu.map((item: any) => (
+        <li key={item.name} className={navsMenuClass(item.pathName)}>
+          <Link
+            onClick={e => stopRouterChange(e, item.pathName, headActiveMenu)}
+            to={item.pathName}
+            style={{ color: item.pathName === headActiveMenu ? '#ffffff' : '#333333' }}
+            className="nav-menu-link"
+          >
+            <span>{item.title}</span>
+          </Link>
+        </li>
+      ))}
     </ul>
   );
 };
