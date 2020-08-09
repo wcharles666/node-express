@@ -1,8 +1,23 @@
 {
-  "presets": ["@babel/preset-env", "@babel/preset-react", "@babel/preset-typescript"],
-  "env": {
-    "test": {
-      "plugins": ["@babel/plugin-transform-modules-commonjs"]
-    }
-  }
+  "presets": [
+    [
+      "@babel/preset-env",
+      {
+        "targets": {
+          "node": "current"
+        }
+      }
+    ],
+    "@babel/preset-react",
+    "@babel/preset-typescript"
+  ]
 }
+
+// yarn jest
+// jest (babel-jest)
+// babel-core
+// 取 .babelrc配置
+// 在运行测试之前,结合babel,先把你的代码做一次转化
+// 运行转化过的测试用例代码
+
+
