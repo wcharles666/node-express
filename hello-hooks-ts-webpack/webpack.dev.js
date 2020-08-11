@@ -12,12 +12,12 @@ module.exports = merge(common, {
     hot: true,
     port: 8888,
     historyApiFallback: true,
-    proxy: [
-      {
-        context: context,
-        target: 'http://127.0.0.1:3000',
-        secure: false,
-      },
-    ],
+    // proxy: [
+    //   {
+    //     context: context,
+    //     target: 'http://127.0.0.1:3000',
+    //     secure: false,
+    //   },
+    // ],
   },
 });

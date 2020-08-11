@@ -23,6 +23,7 @@ const Main = () => {
       getUserConfirmation={() => getConfirmation(history, 'yourCallBack')}
     >
       <App isLogin={isLogin ? true : false}>
+        <div>sdsd</div>
         <RouterMap routes={routes} />
       </App>
     </BrowserRouter>

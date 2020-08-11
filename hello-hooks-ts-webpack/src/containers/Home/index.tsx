@@ -38,7 +38,7 @@ class Home extends React.Component {
   //   alert(2);
   // }
   render() {
-    return <div style={{ height: 150, width: 150, backgroundColor: '#000' }} />;
+    return <div style={{ height: 150, width: 150, backgroundColor: '#000' }}>dsankjdsakdh</div>;
   }
 }
 
