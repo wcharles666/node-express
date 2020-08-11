@@ -1,4 +1,4 @@
-const Reac = {
+const React = {
   createElement,
 };
 
