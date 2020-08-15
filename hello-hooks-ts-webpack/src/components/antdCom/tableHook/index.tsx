@@ -172,29 +172,49 @@ const AntdTable = props => {
   };
 
   return (
-    <Form form={form} component={false}>
+    <div>
       <Table
-        components={{
-          body: {
-            cell: EditableCell,
-          },
-        }}
-        bordered
-        dataSource={data}
         columns={mergedColumns}
-        rowClassName="editable-row"
+        dataSource={[]}
+        className="column-box"
+        bordered={true}
         onHeaderRow={(column, index) => {
+          console.log(column, index);
           return {
             onClick: () => {
               console.log(column, index);
             }, // 点击表头行
+            onRightClick: () => {
+              console.log('sdjskjd');
+            }, // 点击表头行
           };
         }}
-        pagination={{
-          onChange: cancel,
-        }}
+        onRow={() => {}}
       />
-    </Form>
+      <Form form={form} component={false}>
+        <Table
+          components={{
+            body: {
+              cell: EditableCell,
+            },
+          }}
+          bordered
+          dataSource={data}
+          columns={mergedColumns}
+          rowClassName="editable-row"
+          onHeaderRow={(column, index) => {
+            return {
+              onClick: () => {
+                console.log(column, index);
+              }, // 点击表头行
+            };
+          }}
+          pagination={{
+            onChange: cancel,
+          }}
+        />
+      </Form>
+    </div>
   );
 };
 

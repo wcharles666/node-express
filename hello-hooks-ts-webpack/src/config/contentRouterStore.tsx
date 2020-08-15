@@ -7,6 +7,7 @@ import Settings from '@/containers/Settings';
 import AntdForm from '@/components/antdCom/formHook';
 import AntdTable from '@/components/antdCom/tableHook';
 import AntdPagaination from '@/components/antdCom/pagainationHook';
+import AntdXhTable from '@/components/antdCom/xhTable';
 import NotFound from '@/components/NotFound';
 
 const contentRoutes = [
@@ -45,6 +46,13 @@ const contentRoutes = [
     name: 'antdPagaination',
     exact: true,
     component: AntdPagaination,
+    leftSide: true,
+  },
+  {
+    path: '/main/components/xhTable',
+    name: 'antdXhTable',
+    exact: true,
+    component: AntdXhTable,
     leftSide: true,
   },
   {

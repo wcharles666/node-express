@@ -12,6 +12,7 @@ export const comSideBar = [
         { title: 'Form表单', name: 'form', pathName: '/main/components/form' },
         { title: 'Table表格', name: 'table', pathName: '/main/components/table' },
         { title: 'Pagaination分页', name: 'pagaination', pathName: '/main/components/pagaination' },
+        { title: '新华Table', name: 'xhTable', pathName: '/main/components/xhTable' },
       ],
     },
   },

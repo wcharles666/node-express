@@ -65,8 +65,8 @@ module.exports = {
         use: [
           'style-loader', // creates style nodes from JS strings
           'css-loader',
-          'less-loader',
           'postcss-loader',
+          'less-loader',
         ],
       },
       {

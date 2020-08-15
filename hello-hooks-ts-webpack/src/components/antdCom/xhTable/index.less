@@ -1,0 +1,117 @@
+.xhTablePage {
+  min-width: 800px;
+  max-width: 800px;
+  max-height: 400px;
+  padding-top: 50px;
+  table.xh-table {
+    min-height: 25px;
+    line-height: 25px;
+    text-align: center;
+    border-collapse: collapse;
+  }
+  table,
+  table tr th,
+  table tr td {
+    border: 1px solid #cbcfd2;
+  }
+  .xh-name-cloumn {
+    // background-color: yellow;
+    // border-left-color: purple;
+    // border-right-color: purple;
+  }
+  // thead tr .xh-name-cloumn:first-child {
+  //   border-top-color: purple;
+  // }
+  // tbody tr:last-child .xh-name-cloumn {
+  //   border-bottom-color: purple;
+  // }
+
+  // // 如果选中第零行, 需更改表头的border-bottom-color
+  // thead tr th {
+  //   border-bottom-color: purple;
+  // }
+
+  // tr.xh-0-row td {
+  //   border-bottom-color: purple;
+  // }
+  // tr.xh-1-row {
+  //   // background-color: yellow;
+  // }
+  // tr.xh-1-row td {
+  //   border-bottom-color: purple;
+  // }
+  // tr.xh-1-row td:first-child {
+  //   border-left-color: purple;
+  // }
+  // tr.xh-1-row td:last-child {
+  //   border-right-color: purple;
+  // }
+
+  table.xh-table-mark-column {
+    border-color: red;
+    margin-bottom: 6px;
+  }
+  table.xh-table-mark-column th {
+    height: 10px;
+  }
+
+  .xh-header-tip-Box {
+    position: absolute;
+    right: 0;
+    top: -15px;
+    width: 34px;
+    height: 12px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    span {
+      display: inline-block;
+      height: 12px;
+      width: 15px;
+      border: 1px solid #bdbdbd;
+      padding: 0;
+      text-align: center;
+      line-height: 9px;
+      color: '#999999';
+      // background-color: '#ffffff' !important;
+    }
+    span:hover {
+      cursor: pointer;
+      background-color: #eeeeee;
+    }
+  }
+}
+
+.xh-decoration-th-colums {
+  min-width: 200px;
+  position: relative;
+}
+
+.xh-decoration-th-colums-active {
+  border-color: #6c70ef !important;
+  background-color: #bbc4e2;
+}
+
+.xh-decoration-th-colums-active-left-border {
+  border-left-color: #6c70ef !important;
+}
+
+/*
+* table表单选中背景色
+*/
+.xh-tb-th-colums-border {
+  border-left-color: #6c70ef !important;
+  border-right-color: #6c70ef !important;
+  border-top-color: #6c70ef !important;
+  background-color: #bbc4e2;
+}
+
+.xh-td-colums-border-lr {
+  border-left-color: #6c70ef !important;
+  border-right-color: #6c70ef !important;
+  background-color: #bbc4e2;
+}
+.xh-td-colums-border-bottom {
+  border-bottom-color: #6c70ef !important;
+}
