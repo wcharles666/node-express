@@ -125,7 +125,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.diffNode = exports.diff = void 0;
 
-var _index = require("./index");
+var _diffPart = require("./diffPart");
 
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 
@@ -140,19 +140,25 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToAr
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
 var diff = function diff(dom, vnode, container) {
-  // 对比节点的变化
+  // 对比节点的变化,将对比后的节点返回
   var ret = diffNode(dom, vnode);
+  console.log("ret", ret);
 
   if (container) {
     container.appendChild(ret);
   }
 
   return ret;
-};
+}; // 对比真实dom和虚拟dom
+
 
 exports.diff = diff;
 
 var diffNode = function diffNode(dom, vnode) {
+  // console.log("====================================");
+  // console.log(dom);
+  // console.log(vnode, "sd");
+  // console.log("====================================");
   var out = dom;
   if (vnode === undefined || vnode === null || typeof vnode === "boolean") vnode = "";
   if (typeof vnode === "number") vnode = String(vnode); // 如果vnode是字符串
@@ -164,6 +170,7 @@ var diffNode = function diffNode(dom, vnode) {
         dom.textContent = vnode;
       }
     } else {
+      // dom为undefine时
       out = document.createTextNode(vnode);
 
       if (dom && dom.parentNode) {
@@ -200,21 +207,22 @@ var diffComponent = function diffComponent(dom, vnode) {
 
   if (comp && comp.constructor === vnode.tag) {
     // 重新设置props
-    (0, _index.setComponentProps)(comp, vnode.attrs); // 赋值
+    (0, _diffPart.setComponentProps)(comp, vnode.attrs); // 赋值
 
     dom = comp.base;
   } else {
     // 组件类型发生变化
     if (comp) {
       // 先移除旧的组件
-      unmountComonent(comp);
+      unmountComonent(comp); // 释放comp
+
       comp = null;
     } // 1.创建新组件
 
 
-    comp = (0, _index.createComponent)(vnode.tag, vnode.attrs); // 2.设置组件属性
+    comp = (0, _diffPart.createComponent)(vnode.tag, vnode.attrs); // 2.设置组件属性
 
-    (0, _index.setComponentProps)(comp, vnode.attrs); // 3.给当前挂载base
+    (0, _diffPart.setComponentProps)(comp, vnode.attrs); // 3.给当前挂载base
 
     dom = comp.base;
   }
@@ -233,6 +241,7 @@ var removeNode = function removeNode(dom) {
 };
 
 var diffChildren = function diffChildren(dom, vchildren) {
+  // dom 真实节点 vchildren为数组
   var domChildren = dom.childNodes;
   var children = [];
   var keyed = {}; // 将有key的节点(用对象保存)和没有key的节点(用数组保存)分开
@@ -253,6 +262,7 @@ var diffChildren = function diffChildren(dom, vchildren) {
   }
 
   if (vchildren && vchildren.length > 0) {
+    // 对子节点有增加 删除 的操作, 加入属性key 作为标识
     var min = 0;
     var childrenLen = children.length;
 
@@ -306,11 +316,15 @@ var diffAttribute = function diffAttribute(dom, vnode) {
   // 保存之前的DOM的所有属性
   var oldAttrs = {};
   var newAttrs = vnode.attrs; //dom 是原有的节点对象  vnode 虚拟DOM
+  // const idDomAttr = document.querySelector("#root").attributes;
+  // console.log(idDomAttr, "idDomAttr");
+  // console.log("domAttrs");
 
   var domAttrs = dom.attributes;
 
   _toConsumableArray(domAttrs).forEach(function (item) {
-    // console.log(item.name,item.value);
+    // 获取节点对象的属性
+    console.log(item.name, item.value);
     oldAttrs[item.name] = item.value;
   }); // 比较
   // 如果原来属性跟新的属性对比,不在新的属性中,则将其移除掉 (属性值为undefined)
@@ -318,7 +332,7 @@ var diffAttribute = function diffAttribute(dom, vnode) {
 
   for (var key in oldAttrs) {
     if (!(key in newAttrs)) {
-      (0, _index.setAttribute)(dom, key, undefined);
+      (0, _diffPart.setAttribute)(dom, key, undefined);
     }
   } // 更新 class='active'  abc
 
@@ -326,19 +340,19 @@ var diffAttribute = function diffAttribute(dom, vnode) {
   for (var _key in newAttrs) {
     if (oldAttrs[_key] !== newAttrs[_key]) {
       // 值不同,更新值
-      (0, _index.setAttribute)(dom, _key, newAttrs[_key]);
+      (0, _diffPart.setAttribute)(dom, _key, newAttrs[_key]);
     }
   }
 };
-},{"./index":"react-dom/index.js"}],"react-dom/index.js":[function(require,module,exports) {
+},{"./diffPart":"react-dom/diffPart.js"}],"react-dom/diffPart.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = exports.setAttribute = exports.setComponentProps = exports.renderComponent = exports.createComponent = void 0;
+exports.default = exports.setAttribute = exports.renderComponent = exports.setComponentProps = exports.createComponent = void 0;
 
-var _component = _interopRequireDefault(require("../react/component"));
+var _componentNormalDiff = _interopRequireDefault(require("../react/componentNormalDiff"));
 
 var _diff = require("./diff");
 
@@ -346,6 +360,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
+// import React from "../react";
 // const render = (vnode, container) => {
 //   // console.log(typeof vnode);
 //   // console.log(vnode, "dsds");
@@ -353,11 +368,12 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 //   return container.appendChild(_render(vnode));
 // };
 var render = function render(vnode, container, dom) {
-  // console.log(typeof vnode);
+  // 开始起初dom为undefined
+  console.log(vnode, container, dom); // console.log(typeof vnode);
   // console.log(vnode, "dsds");
   // console.log(container, "dsds");
-  return (0, _diff.diff)(dom, vnode, container); // not diff
-  // return container.appendChild(_render(vnode));
+
+  return (0, _diff.diff)(dom, vnode, container);
 };
 
 var createComponent = function createComponent(comp, props) {
@@ -365,7 +381,7 @@ var createComponent = function createComponent(comp, props) {
   // 通过判定原型是否有render方法进行判别是否为class组件
   // instanceof就是通过原型链来进行类型判断的,因此我们可以直接采用instanceof来进行判断
   // 我们能否只检测 React.Component 的后代呢？
-  var inst;
+  var inst; // if (comp.prototype && comp.prototype instanceof React.Component) {
 
   if (comp.prototype && comp.prototype.render) {
     console.log("类组件吗", comp); // 如果是类定义的组件, 则创建新的实例,返回
@@ -373,7 +389,7 @@ var createComponent = function createComponent(comp, props) {
     inst = new comp(props);
   } else {
     // 如果是函数组件,将函数组件扩展为类组件，方便后面统一管理
-    inst = new _component.default(props);
+    inst = new _componentNormalDiff.default(props);
     inst.constructor = comp; // 定义render函数
 
     inst.render = function () {
@@ -386,10 +402,26 @@ var createComponent = function createComponent(comp, props) {
 
 exports.createComponent = createComponent;
 
+var setComponentProps = function setComponentProps(comp, props) {
+  if (!comp.base) {
+    if (comp.componentWillMount) comp.componentWillMount();
+  } else if (comp.componentWillReceiveProps) {
+    comp.componentWillReceiveProps();
+  } // 设置组件属性
+
+
+  comp.props = props; // 渲染组件
+
+  renderComponent(comp);
+};
+
+exports.setComponentProps = setComponentProps;
+
 var renderComponent = function renderComponent(comp) {
   var base; // 调用render，返回jsx对象
 
-  var renderer = comp.render(); // base = _render(renderer);
+  var renderer = comp.render(); // 重新渲染时,需要diff一下
+  // base = _render(renderer);
 
   base = (0, _diff.diffNode)(comp.base, renderer);
 
@@ -409,82 +441,12 @@ var renderComponent = function renderComponent(comp) {
 
   comp.base = base;
 };
-
-exports.renderComponent = renderComponent;
-
-var setComponentProps = function setComponentProps(comp, props) {
-  if (!comp.base) {
-    if (comp.componentWillMount) comp.componentWillMount();
-  } else if (comp.componentWillReceiveProps) {
-    comp.componentWillReceiveProps();
-  } // 设置组件属性
-
-
-  comp.props = props; // 渲染组件
-
-  renderComponent(comp);
-};
-
-exports.setComponentProps = setComponentProps;
-
-var _render = function _render(vnode) {
-  // render方法里面解析vnode
-  if (typeof vnode === "undefined" || vnode === null || typeof vnode === "boolean") {
-    return "";
-  }
-
-  if (typeof vnode === "number") {
-    vnode = String(vnode);
-  } // 如果vnode是字符串
-
-
-  if (typeof vnode === "string") {
-    // 创建文本节点
-    return document.createTextNode(vnode); // return container.appendChild(textNode);
-  } // 如果tag是函数,则渲染组件
-
-
-  if (typeof vnode.tag === "function") {
-    // 1. 创建组件
-    var comp = createComponent(vnode.tag, vnode.attrs); // 2. 设置组件的属性
-    // console.log(comp, "comp");
-
-    setComponentProps(comp, vnode.attrs); // 3. 组件渲染的节点对象返回
-
-    return comp.base;
-  } // 否则就是一个虚拟DOM对象
-
-
-  var _vnode = vnode,
-      tag = _vnode.tag,
-      attrs = _vnode.attrs; // 创建节点对象
-
-  var dom = document.createElement(tag);
-
-  if (attrs) {
-    // 有属性
-    Object.keys(attrs).forEach(function (key) {
-      var value = attrs[key]; // console.log(value, key);
-      // 添加属性(dom元素，key 属性 value属性值)
-
-      setAttibute(dom, key, value);
-    });
-  } // 递归渲染子节点
-
-
-  if (vnode.childrens) {
-    vnode.childrens.forEach(function (child) {
-      return render(child, dom);
-    });
-  } // return container.appendChild(dom);
-
-
-  return dom;
-};
 /*
   添加属性
 */
 
+
+exports.renderComponent = renderComponent;
 
 var setAttribute = function setAttribute(dom, key, value) {
   // 将属性名className 转换为class
@@ -532,7 +494,84 @@ var ReactDOM = {
 };
 var _default = ReactDOM;
 exports.default = _default;
-},{"../react/component":"react/component.js","./diff":"react-dom/diff.js"}],"react/component.js":[function(require,module,exports) {
+},{"../react/componentNormalDiff":"react/componentNormalDiff.js","./diff":"react-dom/diff.js"}],"react/set_state_queue.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.enqueueSetState = void 0;
+
+var _diffPart = require("../react-dom/diffPart");
+
+// 1. 异步更新State,短时间内把多个State合并为一个(队列) 先进先出
+// 2.一段时间之后，循环清空队列,渲染组件
+// 数组模拟队列
+var setStateQueue = []; // 保存当前组件
+
+var renderQueue = [];
+
+var defer = function defer(fn) {
+  return Promise.resolve().then(fn);
+};
+
+var enqueueSetState = function enqueueSetState(stateChange, component) {
+  if (setStateQueue.length === 0) {
+    // setTimeout(() => {
+    //   flush();
+    // }, 0);
+    defer(flush);
+  } // 1.短时间内合并多个SetState;
+
+
+  setStateQueue.push({
+    stateChange: stateChange,
+    component: component
+  }); //  如果renderQueue里面没有组件, 添加到队列中
+
+  var r = renderQueue.some(function (item) {
+    return item === component;
+  });
+
+  if (!r) {
+    // 证明第一次添加
+    renderQueue.push(component);
+  }
+}; // 一段时间之后
+
+
+exports.enqueueSetState = enqueueSetState;
+
+var flush = function flush() {
+  var item, component; // 对列中已有值
+  // while ((item = setStateQueue.pop())) {
+
+  while (item = setStateQueue.shift()) {
+    // console.log(item, "dsd");
+    var _item = item,
+        stateChange = _item.stateChange,
+        _component = _item.component; // 保存之前的状态
+
+    if (!_component.prevState) {
+      _component.prevState = Object.assign({}, _component.state);
+    }
+
+    if (typeof stateChange === "function") {
+      //  如果为函数
+      Object.assign(_component.state, stateChange(_component.prevState, _component.props));
+    } else {
+      Object.assign(_component.state, stateChange);
+    } // 赋值
+
+
+    _component.prevState = _component.state;
+  }
+
+  while (component = renderQueue.shift()) {
+    (0, _diffPart.renderComponent)(component);
+  }
+};
+},{"../react-dom/diffPart":"react-dom/diffPart.js"}],"react/componentNormalDiff.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -540,7 +579,9 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _reactDom = require("../react-dom");
+var _diffPart = require("../react-dom/diffPart");
+
+var _set_state_queue = require("./set_state_queue");
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -561,11 +602,15 @@ var Component = /*#__PURE__*/function () {
   _createClass(Component, [{
     key: "setState",
     value: function setState(stateChange) {
-      // 直接简单一点，进行浅拷贝
-      // 对象拷贝
-      Object.assign(this.state, stateChange); // 渲染组件
-
-      (0, _reactDom.renderComponent)(this);
+      // console.log(stateChange, "stateChange");
+      // // 直接简单一点，进行浅拷贝
+      // // 对象拷贝
+      // Object.assign(this.state, stateChange);
+      // 状态改变, 渲染组件
+      // renderComponent(this);
+      // console.log("stateChange", stateChange);
+      // console.log(this);
+      (0, _set_state_queue.enqueueSetState)(stateChange, this);
     }
   }]);
 
@@ -574,7 +619,7 @@ var Component = /*#__PURE__*/function () {
 
 var _default = Component;
 exports.default = _default;
-},{"../react-dom":"react-dom/index.js"}],"react/index.js":[function(require,module,exports) {
+},{"../react-dom/diffPart":"react-dom/diffPart.js","./set_state_queue":"react/set_state_queue.js"}],"react/index.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -582,10 +627,11 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _component = _interopRequireDefault(require("./component"));
+var _componentNormalDiff = _interopRequireDefault(require("./componentNormalDiff"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+// import Component from "./component";
 var createElement = function createElement(tag, attrs) {
   attrs = attrs || {};
 
@@ -603,32 +649,15 @@ var createElement = function createElement(tag, attrs) {
     key: attrs.key || null // diff
 
   };
-}; // const ele = (
-//   <div className="active" title="123">
-//     hello, <span>react</span>
-//   </div>
-// );
-// console.log(ele, "dsd");
-//
-// var ele = React.createElement(
-//   "div",
-//   {
-//     className: "active",
-//     title: "123",
-//   },
-//   "hello, ",
-//   React.createElement("span", null, "react")
-// );
-//  createElement(tag, attr, child1, child2...);
-
+};
 
 var React = {
   createElement: createElement,
-  Component: _component.default
+  Component: _componentNormalDiff.default
 };
 var _default = React;
 exports.default = _default;
-},{"./component":"react/component.js"}],"node_modules/parcel-bundler/src/builtins/bundle-url.js":[function(require,module,exports) {
+},{"./componentNormalDiff":"react/componentNormalDiff.js"}],"node_modules/parcel-bundler/src/builtins/bundle-url.js":[function(require,module,exports) {
 var bundleURL = null;
 
 function getBundleURLCached() {
@@ -700,12 +729,12 @@ var reloadCSS = require('_css_loader');
 
 module.hot.dispose(reloadCSS);
 module.hot.accept(reloadCSS);
-},{"_css_loader":"node_modules/parcel-bundler/src/builtins/css-loader.js"}],"index.js":[function(require,module,exports) {
+},{"_css_loader":"node_modules/parcel-bundler/src/builtins/css-loader.js"}],"indexDiff.js":[function(require,module,exports) {
 "use strict";
 
 var _react = _interopRequireDefault(require("./react"));
 
-var _reactDom = _interopRequireDefault(require("./react-dom"));
+var _diffPart = _interopRequireDefault(require("./react-dom/diffPart"));
 
 require("./index.css");
 
@@ -733,50 +762,9 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
-// console.dir(React);
-var ele = _react.default.createElement("div", {
-  className: "active",
-  title: "123",
-  style: {
-    width: 200,
-    height: 100,
-    backgroundColor: "red"
-  },
-  onClick: function onClick() {
-    console.log("dsjds");
-  }
-}, "hello, ", _react.default.createElement("span", null, "react")); // const ele = "hello, react";
-// // var ele = React.createElement(
-// //   "div",
-// //   {
-// //     className: "active",
-// //     title: "123",
-// //   },
-// //   "hello, ",
-// //   React.createElement("span", null, "react")
-// // );
-// console.log(ele, "dsd");
-//  核心： 组件化开发
+//  核心: 组件化开发
 // 1.为什么ReactDOM.render() 必须要引入React?
 // 2.组件： 函数组件 类组件
-// const HomeChild1 = () => {
-//   return <div className="active" title="1232"></div>;
-// };
-
-
-var Home = function Home() {
-  return _react.default.createElement("div", {
-    className: "active"
-  }, _react.default.createElement("span", null, "\u6211\u662F\u7EC4\u4EF6"));
-}; // const ChildComponent = () => {
-//   return (
-//     <div className="active">
-//       <span>我是子组件</span>
-//     </div>
-//   );
-// };
-
-
 var ClassComponet = /*#__PURE__*/function (_React$Component) {
   _inherits(ClassComponet, _React$Component);
 
@@ -802,16 +790,19 @@ var ClassComponet = /*#__PURE__*/function (_React$Component) {
   }, {
     key: "componentDidMount",
     value: function componentDidMount() {
-      for (var i = 0; i < 100; i++) {
-        this.setState(function (prevState, prevProps) {
-          console.log(prevState.number);
-          return {
-            number: prevState.number + 1
-          };
-        });
-        console.log(this.state.num);
-      }
-
+      //  this.handleIncrement();
+      // for (let i = 0; i < 100; i++) {
+      //   this.setState({
+      //     number: this.state.number + 1,
+      //   });
+      //   // this.setState((prevState, prevProps) => {
+      //   //   console.log(prevState.number);
+      //   //   return {
+      //   //     number: prevState.number + 1,
+      //   //   };
+      //   // });
+      //   console.log(this.state.num);
+      // }
       console.log("组件加载完成");
     }
   }, {
@@ -835,33 +826,38 @@ var ClassComponet = /*#__PURE__*/function (_React$Component) {
       // 修改状态的唯一方法是调用setState
       this.setState({
         number: this.state.number + 1
-      });
+      }); // this.setState((prevState) => {
+      //   return { number: prevState.number + 1 };
+      // });
+
+      console.log(this.state.number);
+    }
+  }, {
+    key: "handleIncrement",
+    value: function handleIncrement() {
+      this.handleClick();
+      this.handleClick();
+      this.handleClick();
     }
   }, {
     key: "render",
     value: function render() {
       return _react.default.createElement("div", {
-        className: "classContainer"
+        className: "active"
       }, _react.default.createElement("p", null, "\u6211\u662F\u7C7B\u7EC4\u4EF6"), _react.default.createElement("p", null, "\u6570\u91CF", this.state.number), _react.default.createElement("button", {
-        onClick: this.handleClick.bind(this)
+        onClick: this.handleIncrement.bind(this)
       }, "\u70B9\u51FB\u6211"));
     }
   }]);
 
   return ClassComponet;
-}(_react.default.Component); // console.log(<Home name="home" />, "组件");
-// console.log(ele, "ds");
-// jsx封装
-// ReactDOM.render(ele, document.getElementById("root"));
-// 函数组件
-// ReactDOM.render(<Home name="home" />, document.getElementById("root"));
-// 类组件
+}(_react.default.Component); // 类组件
 
 
-_reactDom.default.render(_react.default.createElement(ClassComponet, {
+_diffPart.default.render(_react.default.createElement(ClassComponet, {
   name: "home"
 }), document.getElementById("root"));
-},{"./react":"react/index.js","./react-dom":"react-dom/index.js","./index.css":"index.css"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"./react":"react/index.js","./react-dom/diffPart":"react-dom/diffPart.js","./index.css":"index.css"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -889,7 +885,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "64954" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49526" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
@@ -1065,5 +1061,5 @@ function hmrAcceptRun(bundle, id) {
     return true;
   }
 }
-},{}]},{},["node_modules/parcel-bundler/src/builtins/hmr-runtime.js","index.js"], null)
-//# sourceMappingURL=/react-self-frame.e31bb0bc.js.map
+},{}]},{},["node_modules/parcel-bundler/src/builtins/hmr-runtime.js","indexDiff.js"], null)
+//# sourceMappingURL=/indexDiff.79db76d9.js.map

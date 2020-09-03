@@ -1,0 +1,19 @@
+.active {
+  background-color: orange;
+  width: 200px;
+  height: 200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.classContainer {
+  background-color: blue;
+  width: 200px;
+  height: 200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+/*# sourceMappingURL=/react-self-frame.e31bb0bc.css.map */

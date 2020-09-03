@@ -1,4 +1,8 @@
 {
   "presets": ["env"],
+  // "plugins": [["transform-react-jsx", {
+  //   "prama": "React.createElement"
+  // }]]
+  // 将jsx 转为js对象
   "plugins": [["transform-react-jsx"]]
 }
