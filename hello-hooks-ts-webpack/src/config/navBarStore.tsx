@@ -26,6 +26,16 @@ export const comSideBar = [
       ],
     },
   },
+  {
+    title: 'SVG',
+    name: 'svg',
+    subMenu: {
+      data: [
+        { title: 'svgDemo1', name: 'svgDemo1', pathName: '/main/components/svgDemo1' },
+        { title: 'svgDemo2', name: 'svgDemo2', pathName: '/main/components/svgDemo2' },
+      ],
+    },
+  },
 ];
 
 export const demoSideBar = [
@@ -39,6 +49,21 @@ export const demoSideBar = [
     name: 'hooksDemo',
     subMenu: {
       data: [{ title: 'demoForm', name: 'demoForm', pathName: '/main/demo/form' }],
+    },
+  },
+];
+
+export const studySideBar = [
+  {
+    title: '学习总览',
+    name: 'studyLibiray',
+    menu: { title: '学习总览', name: 'studyLibiray', pathName: '/main/study' },
+  },
+  {
+    title: 'ts相关',
+    name: 'tsLink',
+    subMenu: {
+      data: [{ title: 'tsGeneric', name: 'tsGeneric', pathName: '/main/study/tsGeneric' }],
     },
   },
 ];

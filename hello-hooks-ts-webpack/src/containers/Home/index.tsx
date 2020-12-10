@@ -1,45 +1,57 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
+import { Button } from 'antd';
 import './index.less';
 // import { dipatchLeftSide } from '@/config/commonMethods';
 
-// const Home = (props: any) => {
-//   dipatchLeftSide(props);
+interface HomeProps {}
 
-//   useEffect(() => {
-//     // document.οnClick = two();
-//     console.dir('...', document);
-//   });
-//   const one = e => {
-//     e.nativeEvent.stopImmediatePropagation();
-//     alert(1);
-//   };
+const Home: React.FC<HomeProps> = (props: HomeProps) => {
+  const [localSrc, setLocalSrc]: any = useState('');
+  const videoContain: any = useRef();
+  const getMedia = () => {
+    console.log(videoContain, 'sds');
+    navigator.getUserMedia(
+      {
+        video: true,
+      },
+      stream => {
+        videoContain.current.srcObject = stream;
+      },
+      err => {
+        console.error(`getUserMedia() error: ${err.name}`);
+      }
+    );
+  };
 
-//   const two = () => {
-//     alert(2);
-//   };
-//   return (
-//     <div className="homePage">
-//       <div style={{ height: 150, width: 150, backgroundColor: '#000' }} onClick={one} />
-//     </div>
-//   );
-// };
-
-// export default Home;
-
-class Home extends React.Component {
-  // componentDidMount() {
-  //   document.onclick = this.two;
-  // }
-  // one(e) {
-  //   e.nativeEvent.stopImmediatePropagation();
-  //   alert(1);
-  // }
-  // two() {
-  //   alert(2);
-  // }
-  render() {
-    return <div style={{ height: 150, width: 150, backgroundColor: '#000' }}>dsankjdsakdh</div>;
-  }
-}
+  return (
+    <div className="homePage">
+      <div className="left_container">
+        <video autoPlay id="local" ref={videoContain}></video>
+        <Button onClick={getMedia}>Get user media</Button>
+        <p>sdsd</p>
+        <p>sdsd</p>
+        <p>sdsd</p>
+        <p>sdsd</p>
+        <p>sdsd</p>
+        <p>sdsd</p>
+        <p>sdsd</p>
+        <p>sdsd</p>
+        <p>sdsd</p>
+        <p>sdsd</p>
+        <p>sdsd</p>
+        <p>sdsd</p>
+        <p>sdsd</p>
+        <p>sdsd</p>
+        <p>sdsd</p>
+        <p>sdsd</p>
+        <p>sdsd</p>
+        <p>sdsd</p>
+        <p>sdsd</p>
+        <p>sdsd</p>
+      </div>
+      <div className="right_container"></div>
+    </div>
+  );
+};
 
 export default Home;
