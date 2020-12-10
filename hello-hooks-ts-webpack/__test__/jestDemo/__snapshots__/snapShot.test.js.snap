@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`测试配置文件快照1snap  1`] = `
+Object {
+  "port": 8080,
+  "server": "http://wwww.baidu.com",
+  "time": Any<Date>,
+}
+`;
+
+exports[`测试配置文件快照2snap  1`] = `
+Object {
+  "port": 8080,
+  "server": "http://wwww.baidu.com",
+  "time": Any<Date>,
+}
+`;

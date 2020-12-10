@@ -7,7 +7,12 @@ import Settings from '@/containers/Settings';
 import AntdForm from '@/components/antdCom/formHook';
 import AntdTable from '@/components/antdCom/tableHook';
 import AntdPagaination from '@/components/antdCom/pagainationHook';
+import AntdXhTable from '@/components/antdCom/xhTable';
 import NotFound from '@/components/NotFound';
+import SvgDemo1 from '@/components/svgCom/svgDemo1';
+import SvgDemo2 from '@/components/svgCom/svgDemo2';
+import StudyLibiray from '@/containers/StudyLibiray';
+import TsGeneric from '@/components/tsLink/tsGeneric';
 
 const contentRoutes = [
   {
@@ -45,6 +50,41 @@ const contentRoutes = [
     name: 'antdPagaination',
     exact: true,
     component: AntdPagaination,
+    leftSide: true,
+  },
+  {
+    path: '/main/components/xhTable',
+    name: 'antdXhTable',
+    exact: true,
+    component: AntdXhTable,
+    leftSide: true,
+  },
+  {
+    path: '/main/components/svgDemo1',
+    name: 'svgDemo1',
+    exact: true,
+    component: SvgDemo1,
+    leftSide: true,
+  },
+  {
+    path: '/main/components/svgDemo2',
+    name: 'svgDemo2',
+    exact: true,
+    component: SvgDemo2,
+    leftSide: true,
+  },
+  {
+    path: '/main/study',
+    name: 'studyLibiray',
+    exact: true,
+    component: StudyLibiray,
+    leftSide: true,
+  },
+  {
+    path: '/main/study/tsGeneric',
+    name: 'tsGeneric',
+    exact: true,
+    component: TsGeneric,
     leftSide: true,
   },
   {

@@ -5,6 +5,7 @@ import { MyContext } from '@/config/contextManager';
  */
 
 export const dipatchLeftSide = (props: any) => {
+  console.log('sdhajdh');
   const { dispatch } = useContext(MyContext);
   const { leftSide } = props.route;
   useEffect(() => {
@@ -20,6 +21,8 @@ export const getActiveMenu = (dispatch: (_: any) => void, pathname: string) => {
     headActiveMenu = '/main/components';
   } else if (sideActiveMenu.indexOf('/main/demo') !== -1) {
     headActiveMenu = '/main/demo';
+  } else if (sideActiveMenu.indexOf('/main/study') !== -1) {
+    headActiveMenu = '/main/study';
   }
   dispatch({ type: 'activeMenu', value: { sideActiveMenu, headActiveMenu } });
 };
